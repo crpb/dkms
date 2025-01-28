@@ -1,0 +1,19 @@
+Source: dkms
+Section: unknown
+Priority: optional
+Maintainer: Christopher Bock <christopher@bocki.com>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+Standards-Version: 4.7.0
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/dkms
+#Vcs-Git: https://salsa.debian.org/debian/dkms.git
+
+Package: dkms
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: <insert up to 60 chars description>
+ <Insert long description, indented with spaces.>
