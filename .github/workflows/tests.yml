@@ -2,6 +2,7 @@ name: Run tests
 
 on:
   # Build at 23:00 every Sunday
+  workflow_dispatch:
   schedule:
     - cron: "0 23 * * 1"
   pull_request:
