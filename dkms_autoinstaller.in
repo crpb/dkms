@@ -17,32 +17,10 @@
 ### END INIT INFO
 
 
-if [ -f /lib/lsb/init-functions ]; then
-    . /lib/lsb/init-functions
-elif [ -f /etc/rc.d/init.d/functions ]; then
-    . /etc/rc.d/init.d/functions
-fi
-
 exec="@SBINDIR@/dkms"
-prog=${exec##*/}
+MODDIR="@MODDIR@"
 
 test -f $exec || exit 0
-
-[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
-
-uname_s=$(uname -s)
-
-_get_kernel_dir() {
-    KVER=$1
-    DIR="@MODDIR@/$KVER/build"
-    echo $DIR
-}
-
-_check_kernel_dir() {
-    DIR=$(_get_kernel_dir $1)
-    test -e $DIR/include
-    return $?
-}
 
 case "$1" in
     start)
@@ -51,11 +29,12 @@ case "$1" in
 		else
 			kernel=$(uname -r)
 		fi
-		if ! _check_kernel_dir $kernel; then
+		if [ ! -d "$MODDIR/$kernel/build/include" ]; then
 			echo "Automatic installation of modules for kernel $kernel was skipped since the kernel headers for this kernel do not seem to be installed."
 		else
 			dkms autoinstall --kernelver $kernel
 			res=$?
+			test $res = 0
 		fi
 		;;
 	stop|restart|force-reload|status|reload)
